@@ -1,0 +1,64 @@
+apply plugin: 'com.android.application'
+apply from: 'doraemonkit.gradle'
+
+android {
+    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
+    defaultConfig {
+        applicationId rootProject.ext.android["applicationId"]
+        minSdkVersion rootProject.ext.android["minSdkVersion"]
+        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
+        versionCode rootProject.ext.android["versionCode"]
+        versionName rootProject.ext.android["versionName"]
+        multiDexEnabled true
+    }
+    signingConfigs {
+        release {
+        }
+    }
+    buildTypes {
+        debug {
+        }
+        release {
+//            debuggable true
+            minifyEnabled false
+            shrinkResources false
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    //指定资源和代码目录
+    sourceSets {
+        debug {
+            manifest.srcFile 'src/debug/java/AndroidManifest.xml'
+            jniLibs.srcDir 'libs'
+        }
+
+        release {
+            manifest.srcFile 'src/release/java/AndroidManifest.xml'
+            jniLibs.srcDir 'libs'
+        }
+
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation rootProject.ext.dependencies["junit"]
+    implementation rootProject.ext.dependencies["multidex"]
+    implementation rootProject.ext.dependencies["appcompat-v7"]
+    implementation rootProject.ext.dependencies["design"]
+
+    implementation rootProject.ext.dependencies["utilcode"]
+
+}
